@@ -6,23 +6,21 @@
 
 <insert id="createUser">
 		<![CDATA[
-		    INSERT INTO USERS (USERNAME, EMAIL, PASSWORD_HASH)
+		INSERT INTO USERS (USERNAME, EMAIL, PASSWORD_HASH)
 		VALUES (#{username}, #{email}, #{passwordHash})
 		]]>
     </insert>
 
 
 
-<select id="retrieveUser" resultType="HashMap">
+<select id="retrieveUser" resultType="com.gram.dto.RetrieveUserOutDto">
 		<![CDATA[
 		    SELECT 
 		    U.ID, 
 		    U.USERNAME, 
-		    U.EMAIL, 
-		    U.PASSWORD_HASH, 
+		    U.EMAIL,
 		    U.CREATED_AT, 
-		    U.UPDATED_AT, 
-		    UR.ROLE_ID, 
+		    U.UPDATED_AT,
 		    R.NAME AS ROLE_NAME
 		FROM 
 		    USERS U
@@ -30,6 +28,8 @@
 		    USER_ROLES UR ON U.ID = UR.USER_ID
 		LEFT JOIN 
 		    ROLES R ON UR.ROLE_ID = R.ID
+		ORDER BY 
+		    U.CREATED_AT DESC
 		]]>
     </select>
 
@@ -37,13 +37,12 @@
 
 
 
-<select id="getUserHasRole" resultType="HashMap">
+<select id="getUserHasRole" resultType="com.gram.dto.GetUserHasRoleOutDto">
 		<![CDATA[
 		    SELECT 
 		    U.ID, 
 		    U.USERNAME, 
 		    U.EMAIL, 
-		    U.PASSWORD_HASH, 
 		    U.CREATED_AT, 
 		    U.UPDATED_AT, 
 		    UR.ROLE_ID, 
@@ -54,6 +53,8 @@
 		    USER_ROLES UR ON U.ID = UR.USER_ID
 		JOIN 
 		    ROLES R ON UR.ROLE_ID = R.ID
+		ORDER BY 
+		    U.CREATED_AT DESC
 		]]>
     </select>
 
@@ -61,7 +62,7 @@
 
 <update id="updateUser">
 		<![CDATA[
-		    UPDATE USERS U
+			UPDATE USERS U
 		SET USERNAME = #{username},
 		    EMAIL = #{email},
 		    PASSWORD_HASH = #{passwordHash}
@@ -91,7 +92,6 @@
 		    U.ID, 
 		    U.USERNAME, 
 		    U.EMAIL, 
-		    U.PASSWORD_HASH, 
 		    U.CREATED_AT, 
 		    U.UPDATED_AT, 
 		    UR.ROLE_ID, 
@@ -104,6 +104,77 @@
 		    ROLES R ON UR.ROLE_ID = R.ID
 		WHERE 
 		    U.ID = #{id}
+		]]>
+    </select>
+
+
+
+<select id="getUserByUserNameOrEmail" resultType="com.gram.dto.GetUserByUserNameOrEmailOutDto">
+		<![CDATA[
+		    SELECT 
+		    U.ID, 
+		    U.USERNAME, 
+		    U.EMAIL, 
+		    U.CREATED_AT, 
+		    U.UPDATED_AT, 
+		    R.NAME AS ROLE_NAME
+		FROM 
+		    USERS U
+		LEFT JOIN 
+		    USER_ROLES UR ON U.ID = UR.USER_ID
+		LEFT JOIN 
+		    ROLES R ON UR.ROLE_ID = R.ID
+		WHERE 
+		    U.USERNAME = #{param} 
+		    OR U.EMAIL = #{param}
+		]]>
+    </select>
+
+
+
+
+
+
+
+<select id="getUserByEmail" resultType="com.gram.dto.GetUserByEmailOutDto">
+		<![CDATA[
+		    SELECT 
+		    U.ID, 
+		    U.USERNAME, 
+		    U.EMAIL, 
+		    U.CREATED_AT, 
+		    U.UPDATED_AT, 
+		    R.NAME AS ROLE_NAME
+		FROM 
+		    USERS U
+		LEFT JOIN 
+		    USER_ROLES UR ON U.ID = UR.USER_ID
+		LEFT JOIN 
+		    ROLES R ON UR.ROLE_ID = R.ID
+		WHERE 
+		    U.EMAIL = #{email}
+		]]>
+    </select>
+
+
+
+<select id="getUserByUserName" resultType="com.gram.dto.GetUserByUserNameOutDto">
+		<![CDATA[
+		    SELECT 
+		    U.ID, 
+		    U.USERNAME, 
+		    U.EMAIL, 
+		    U.CREATED_AT, 
+		    U.UPDATED_AT, 
+		    R.NAME AS ROLE_NAME
+		FROM 
+		    USERS U
+		LEFT JOIN 
+		    USER_ROLES UR ON U.ID = UR.USER_ID
+		LEFT JOIN 
+		    ROLES R ON UR.ROLE_ID = R.ID
+		WHERE 
+		    U.USERNAME = #{username}
 		]]>
     </select>
 

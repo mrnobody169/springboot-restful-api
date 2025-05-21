@@ -12,18 +12,16 @@ public class GetUserByIdOutDto {
     private Integer id;
     private String username;
     private String email;
-    private String passwordHash;
     private Timestamp createdAt;
     private Timestamp updatedAt;
     private Integer roleId;
     private String roleName;
 
     @Builder
-    public GetUserByIdOutDto(Integer id, String username, String email, String passwordHash, Timestamp createdAt, Timestamp updatedAt, Integer roleId, String roleName) {
+    public GetUserByIdOutDto(Integer id, String username, String email, Timestamp createdAt, Timestamp updatedAt, Integer roleId, String roleName) {
         this.id = id;
         this.username = username;
         this.email = email;
-        this.passwordHash = passwordHash;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.roleId = roleId;
